@@ -1,3 +1,11 @@
+class AuthorError extends Error {
+    constructor(message, errorCode) {
+        super(message);
+        this.name = "AuthorError";
+        this.errorCode = errorCode || "cnmd";
+    }
+}
+
 class NavBar extends HTMLElement {
     _labels = [];
     _hrefs = [];
@@ -68,6 +76,13 @@ class NavBar extends HTMLElement {
             this.style.setProperty('--bgcolor', newValue);
         }
         this.render();
+    }
+
+    get author() {
+        return "IFTC";
+    }
+    set author(value) {
+        throw new AuthorError("You cannot change the author of this component.");
     }
 }
 customElements.define('nav-bar', NavBar);
