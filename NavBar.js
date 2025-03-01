@@ -1,11 +1,10 @@
 class NavBar extends HTMLElement {
     _labels = [];
     _hrefs = [];
-    _active = true;
     _current = '';
 
     static get observedAttributes() {
-        return ['active', 'labels', 'hrefs', 'current'];
+        return ['labels', 'hrefs', 'current'];
     }
 
     constructor() {
@@ -24,16 +23,12 @@ class NavBar extends HTMLElement {
             links.push({
                 label,
                 href: `${this._hrefs[this._labels.indexOf(label)]}`,
-                active: this._active,
             });
         });
         links.forEach(link => {
             const a = document.createElement('a');
             a.href = `javascript:location.href='${link.href}';`;
             a.textContent = link.label;
-            if (link.active) {
-                a.className = 'active';
-            }
             nav.appendChild(a);
         });
         const style = document.createElement('style');
@@ -52,12 +47,7 @@ class NavBar extends HTMLElement {
                 text-decoration: none;
             }
             .navbar a:hover {
-                background-color: rgba(255, 255, 255, 0.5);
-                color: #333;
-            }
-            .navbar a.active {
-                background-color:rgb(0, 157, 255);
-                color: white;
+                background-color: rgba(255, 255, 255, 0.2);
             }
         `;
         this.shadowRoot.appendChild(style);
@@ -66,9 +56,7 @@ class NavBar extends HTMLElement {
 
 
     attributeChangedCallback(name, oldValue, newValue) {
-        if (name === 'active') {
-            this._active = !!newValue;
-        } else if (name === 'labels') {
+        if (name === 'labels') {
             this._labels = newValue.split(',').map(label => label.trim());
         } else if (name === 'hrefs') {
             this._hrefs = newValue.split(',').map(href => href.trim());
