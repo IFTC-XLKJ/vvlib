@@ -41,6 +41,7 @@ class NavBar extends HTMLElement {
             .navbar {
                 background-color: #333;
                 overflow: hidden;
+                user-select: none;
             }
             .navbar a {
                 float: left;
