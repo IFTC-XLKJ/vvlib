@@ -4,7 +4,7 @@ class NavBar extends HTMLElement {
     _current = '';
 
     static get observedAttributes() {
-        return ['labels', 'hrefs', 'current'];
+        return ['labels', 'hrefs', 'color', 'bgcolor'];
     }
 
     constructor() {
@@ -34,14 +34,14 @@ class NavBar extends HTMLElement {
         const style = document.createElement('style');
         style.textContent = `
             .navbar {
-                background-color: #333;
+                background-color: var(--bgcolor, #333);
                 overflow: hidden;
                 user-select: none;
             }
             .navbar a {
                 float: left;
                 display: block;
-                color: white;
+                color: var(--color, white);
                 text-align: center;
                 padding: 14px 20px;
                 text-decoration: none;
@@ -62,6 +62,10 @@ class NavBar extends HTMLElement {
             this._hrefs = newValue.split(',').map(href => href.trim());
         } else if (name === 'current') {
             this._current = newValue;
+        } else if (name === 'color') {
+            this.style.setProperty('--color', newValue);
+        } else if (name === 'bgcolor') {
+            this.style.setProperty('--bgcolor', newValue);
         }
         this.render();
     }
