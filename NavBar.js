@@ -39,11 +39,11 @@ class NavBar extends HTMLElement {
                 text-decoration: none;
             }
             .navbar a:hover {
-                background-color: #ddd;
-                color: black;
+                background-color: rgba(255, 255, 255, 0.5);
+                color: #333;
             }
             .navbar a.active {
-                background-color: #4CAF50;
+                background-color:rgb(0, 157, 255);
                 color: white;
             }
         `;
