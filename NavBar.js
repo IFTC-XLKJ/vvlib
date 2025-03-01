@@ -1,23 +1,35 @@
 class NavBar extends HTMLElement {
+    _labels = [];
+    _hrefs = [];
+    _active = true;
+    _current = '';
+
+    static get observedAttributes() {
+        return ['active', 'labels', 'hrefs', 'current'];
+    }
+
     constructor() {
         super();
+        this.attachShadow({ mode: 'open' });
         this.render();
         console.log(this);
     }
 
     render() {
-        const shadowRoot = this.attachShadow({ mode: 'open' });
+        this.shadowRoot.innerHTML = '';
         const nav = document.createElement('div');
         nav.className = 'navbar';
-        const links = [
-            { label: 'Home', href: '#home', active: true },
-            { label: 'News', href: '#news' },
-            { label: 'Contact', href: '#contact' },
-            { label: 'About', href: '#about' }
-        ];
+        const links = [];
+        this._labels.forEach(label => {
+            links.push({
+                label,
+                href: `${this._hrefs[this._labels.indexOf(label)]}`,
+                active: this._active,
+            });
+        });
         links.forEach(link => {
             const a = document.createElement('a');
-            a.href = link.href;
+            a.href = `javascript:location.href='${link.href}';`;
             a.textContent = link.label;
             if (link.active) {
                 a.className = 'active';
@@ -47,8 +59,22 @@ class NavBar extends HTMLElement {
                 color: white;
             }
         `;
-        shadowRoot.appendChild(style);
-        shadowRoot.appendChild(nav);
+        this.shadowRoot.appendChild(style);
+        this.shadowRoot.appendChild(nav);
+    }
+
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        if (name === 'active') {
+            this._active = !!newValue;
+        } else if (name === 'labels') {
+            this._labels = newValue.split(',').map(label => label.trim());
+        } else if (name === 'hrefs') {
+            this._hrefs = newValue.split(',').map(href => href.trim());
+        } else if (name === 'current') {
+            this._current = newValue;
+        }
+        this.render();
     }
 }
 customElements.define('nav-bar', NavBar);
