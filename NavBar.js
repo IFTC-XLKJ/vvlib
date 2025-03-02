@@ -12,7 +12,7 @@ class NavBar extends HTMLElement {
     _current = '';
 
     static get observedAttributes() {
-        return ['labels', 'hrefs', 'color', 'bgcolor'];
+        return ['labels', 'hrefs', 'color', 'bgcolor', 'sticky'];
     }
 
     constructor() {
@@ -74,6 +74,11 @@ class NavBar extends HTMLElement {
             this.style.setProperty('--color', newValue);
         } else if (name === 'bgcolor') {
             this.style.setProperty('--bgcolor', newValue);
+        } else if (name === 'sticky') {
+            if (newValue || newValue === '') {
+                this.style.position = 'sticky';
+                this.style.top = '0px';
+            }
         }
         this.render();
     }
