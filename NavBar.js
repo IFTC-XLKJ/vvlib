@@ -37,6 +37,15 @@ class NavBar extends HTMLElement {
             const a = document.createElement('a');
             a.href = `javascript:location.href='${link.href}';`;
             a.textContent = link.label;
+            a.addEventListener('click', e => {
+                this.dispatchEvent(new CustomEvent('nav-click', {
+                    preventDefault: () => e.preventDefault(),
+                    detail: {
+                        href: link.href,
+                        label: link.label,
+                    },
+                }));
+            });
             nav.appendChild(a);
         });
         const style = document.createElement('style');
